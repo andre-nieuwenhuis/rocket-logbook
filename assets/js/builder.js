@@ -201,15 +201,21 @@ function projectForm(d, isNew) {
 }
 
 function siteForm(d) {
-  d.about ||= {}; d.about.links ||= [];
-  const para = h('textarea');
-  para.value = (d.about.text || []).join('\n\n');
-  para.addEventListener('input', () => { d.about.text = para.value.split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean); });
+  // Same shape as data/site.json: title, owner {name, headline, bio[], links[]}, about (text for "About this site").
+  if (!d.owner || typeof d.owner !== 'object') d.owner = { name: typeof d.owner === 'string' ? d.owner : '' };
+  d.owner.bio = Array.isArray(d.owner.bio) ? d.owner.bio : [];
+  d.owner.links = Array.isArray(d.owner.links) ? d.owner.links : [];
+  if (typeof d.about !== 'string') d.about = '';
+  const bio = h('textarea', { placeholder: 'A few sentences about you.' });
+  bio.value = d.owner.bio.join('\n\n');
+  bio.addEventListener('input', () => { d.owner.bio = bio.value.split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean); });
   return section('Site name and About page', '', true,
-    h('div.frow', field('Site name', text(d, 'title')), field('Your name', text(d, 'owner'))), field('Site tagline', text(d, 'tagline')),
-    h('div.frow', field('About headline', text(d.about, 'headline')), field('Role or course', text(d.about, 'role'))),
-    field('About text', para, 'Leave an empty line between paragraphs.'),
-    rows(d.about.links, { label: '', url: '' }, (r) => h('div.frow', field('Link label', text(r, 'label', { placeholder: 'LinkedIn' })), field('Address', text(r, 'url', { placeholder: 'https://' }))), 'Add a link', (r) => r.label || 'Link'));
+    h('div.frow', field('Site name', text(d, 'title', { placeholder: 'Rocket logbook' }), 'Shown top left and in the browser tab'), field('Your name', text(d.owner, 'name'), 'Heading of the About page')),
+    field('Headline', text(d.owner, 'headline', { placeholder: 'MEng Aerospace Engineering student at the University of Sheffield.' }), 'One line under your name'),
+    field('About you', bio, 'Leave an empty line between paragraphs.'),
+    h('div', h('p', { style: { fontSize: '13px', fontWeight: 500, color: 'var(--muted)', margin: '4px 0 8px' } }, 'Links (CV, LinkedIn, GitHub, email)'),
+      rows(d.owner.links, { label: '', url: '' }, (r) => h('div.frow', field('Label', text(r, 'label', { placeholder: 'LinkedIn' })), field('Address', text(r, 'url', { placeholder: 'https://' }))), 'Add a link', (r) => r.label || 'Link')),
+    field('About this site', area(d, 'about', 'What the site is and how it is organised.'), 'Shown under "About this site" at the bottom of the About page'));
 }
 
 // ---------------------------------------------------------------- collecting and publishing
@@ -249,7 +255,9 @@ async function collect() {
     message = `${S.isNew ? 'Add' : 'Update'} project ${d.name}`; goto = `#/p/${d.id}`;
   } else if (S.mode === 'site') {
     const site = await fresh('data/site.json', rawSite());
-    Object.assign(site, { title: S.siteDraft.title, owner: S.siteDraft.owner, tagline: S.siteDraft.tagline, about: S.siteDraft.about });
+    const sd = S.siteDraft;
+    if (!String(sd.title || '').trim()) throw new Error('Give the site a name first.');
+    Object.assign(site, { title: sd.title.trim(), owner: { ...sd.owner, links: sd.owner.links.filter((l) => l.label && l.url) }, about: sd.about });
     files.push({ path: 'data/site.json', bytes: enc(site) }); message = 'Update site details'; goto = '#/about';
   } else if (S.mode === 'remove') {
     const p = project(S.pid);

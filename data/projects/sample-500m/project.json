@@ -1,0 +1,18 @@
+{
+  "name": "500 m demonstrator",
+  "tagline": "A small rocket built to pass 500 m and come back in one piece.",
+  "sample": true,
+  "status": "active",
+  "purpose": "Prove a simple, repeatable rocket that reaches 500 m and is recovered undamaged. It is the test bed for the electronics and build methods that later projects depend on.",
+  "goals": [
+    "Reach an apogee of 500 m or more",
+    "Recover the rocket with no damage",
+    "Log altitude for the whole flight",
+    "Keep every iteration documented, including the ones that fail"
+  ],
+  "iterations": [
+    "mk1",
+    "mk2",
+    "mk3"
+  ]
+}

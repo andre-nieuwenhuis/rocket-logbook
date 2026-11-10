@@ -71,9 +71,9 @@ function homePage() {
         h('div', change.title),
         fx.length ? h('div.muted', { style: { fontSize: '13px' } }, `Fixes ${fx[0].iteration.name} failure: ${fx[0].todo.text}`) : null) : null,
       it && it.specs.length ? h('div.stats', it.specs.slice(0, 3).map((s) => statCard(s.label, s.value, s.unit))) : null)),
-    h('div.scroll-cue', { 'aria-hidden': 'true' }, h('span', 'SCROLL'), h('span.scroll-line')));
+    h('div.scroll-cue', { 'aria-hidden': 'true' }, 'SCROLL'));
   const all = h('section.section.wide',
-    h('div.section-head.reveal', h('h2', 'All projects'), h('span.faint', `${store.projects.length} project${store.projects.length === 1 ? '' : 's'}`)),
+    h('div.section-head.reveal', h('h2', 'All projects')),
     h('div.grid', store.projects.map((pr) => {
       const l = latest(pr);
       return h('a.card.pcard.reveal', { href: `#/p/${pr.id}` },
