@@ -14,7 +14,9 @@
     ]
   },
   "about": "Every rocket project gets its own section, and every iteration records what was new, how it was built, how it flew and what failed. Each failure lists what the next iteration has to solve, and each fix links back to the problem it answers.",
-  "projects": [],
+  "projects": [
+    "first-rocket-500m-apogee"
+  ],
   "github": {
     "owner": "andre-nieuwenhuis",
     "repo": "rocket-logbook",
