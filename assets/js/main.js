@@ -71,7 +71,7 @@ function homePage() {
         h('div', change.title),
         fx.length ? h('div.muted', { style: { fontSize: '13px' } }, `Fixes ${fx[0].iteration.name} failure: ${fx[0].todo.text}`) : null) : null,
       it && it.specs.length ? h('div.stats', it.specs.slice(0, 3).map((s) => statCard(s.label, s.value, s.unit))) : null)),
-    h('div.scroll-cue', { 'aria-hidden': 'true' }, 'SCROLL'));
+    h('div.scroll-cue', { 'aria-hidden': 'true' }, h('span', 'SCROLL'), h('span.scroll-line')));
   const all = h('section.section.wide',
     h('div.section-head.reveal', h('h2', 'All projects'), h('span.faint', `${store.projects.length} project${store.projects.length === 1 ? '' : 's'}`)),
     h('div.grid', store.projects.map((pr) => {
@@ -345,7 +345,7 @@ function modelTab(p, it, prev, query) {
   cleanup.push(() => { modelCtx = null; });
   renderList(); renderInspector(null);
   if (query.part) setTimeout(() => stage.selectLabel(query.part), 1200);
-  return h('div.model-ui', list, h('div'), insp, toolbar);
+  return h('div.model-ui', list, h('div.model-gap', { 'aria-hidden': 'true' }), insp, toolbar);
 }
 
 function comparePage(pid, a, b) {

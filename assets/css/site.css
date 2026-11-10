@@ -148,11 +148,13 @@ a.card:hover, button.card:hover { border-color: var(--accent); transform: transl
 .crumbs a:hover { color: var(--text); } .crumbs span[aria-current] { color: var(--text); }
 
 /* ---------- home ---------- */
-.hero { min-height: calc(100vh - var(--nav-h) - 12px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding-bottom: 44px; pointer-events: none; }
+.hero { position: relative; min-height: calc(100vh - var(--nav-h) - 12px); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 32px; padding-bottom: 44px; pointer-events: none; }
 .hero > * { pointer-events: auto; }
 .hero-left { flex: 0 1 440px; display: flex; flex-direction: column; gap: 20px; }
 .hero-right { flex: 0 1 340px; display: flex; flex-direction: column; gap: 12px; }
-.scroll-cue { position: absolute; left: 50%; bottom: 14px; translate: -50% 0; font: 500 11px var(--font-mono); letter-spacing: 0.12em; color: var(--faint); animation: bob 2.4s var(--ease) infinite; }
+.scroll-cue { position: absolute; left: 50%; bottom: 10px; translate: -50% 0; display: flex; flex-direction: column; align-items: center; gap: 8px; font: 500 11px var(--font-mono); letter-spacing: 0.12em; color: var(--faint); pointer-events: none; }
+.scroll-line { width: 1px; height: 28px; background: linear-gradient(var(--faint), transparent); transform-origin: 50% 0; animation: cue 2.2s cubic-bezier(0.65, 0, 0.35, 1) infinite; will-change: transform, opacity; }
+@keyframes cue { 0% { transform: scaleY(0); opacity: 0; } 30% { opacity: 1; } 60% { transform: scaleY(1); opacity: 1; } 100% { transform: scaleY(1); opacity: 0; } }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr)); gap: 16px; }
 .pcard { display: flex; flex-direction: column; gap: 12px; min-height: 190px; }
 .pcard .top { display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
@@ -219,6 +221,7 @@ a.card:hover, button.card:hover { border-color: var(--accent); transform: transl
 /* ---------- model tab ---------- */
 .model-ui { position: fixed; z-index: 12; left: 0; right: 0; bottom: 0; top: var(--model-top, 150px); pointer-events: none; display: grid; grid-template-columns: 250px 1fr 320px; grid-template-rows: 1fr auto; gap: 14px; padding: 0 clamp(12px, 2vw, 24px) 18px; }
 .model-ui > * { pointer-events: auto; }
+.model-ui > .model-gap { pointer-events: none; }
 .parts-panel { grid-row: 1; grid-column: 1; align-self: start; max-height: 100%; overflow: auto; padding: 14px 10px; display: flex; flex-direction: column; gap: 2px; }
 .parts-panel h3 { font: 500 11px var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--faint); padding: 0 8px 8px; }
 .part-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 40px; padding: 0 10px; border-radius: 9px; border: 1px solid transparent; background: transparent; text-align: left; font-size: 13px; width: 100%; }
@@ -323,7 +326,6 @@ body[data-pose="model"] .foot { display: none; }
 @keyframes draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes drawY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
 @keyframes dash { to { stroke-dashoffset: 0; } }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.6); opacity: 0.5; } }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.45s; animation-timing-function: var(--ease); }
 ::view-transition-old(root) { animation-name: vt-out; } ::view-transition-new(root) { animation-name: vt-in; }
