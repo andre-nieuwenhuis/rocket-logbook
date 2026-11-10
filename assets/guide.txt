@@ -1,0 +1,85 @@
+# How to update this site
+
+Everything is done through the **Builder**. You fill in a form, drop in your files and press Publish. You never need to edit code.
+
+**Only you can see or use it.** Visitors see no Builder or guide links. To open the Builder, go to your site address followed by `/#/builder`, for example `https://andre-nieuwenhuis.github.io/rocket-logbook/#/builder`, and bookmark it. Once you have opened it in a browser, the Builder and guide links also appear at the bottom of every page in that browser only. Even if someone else found the address, they could not publish anything, because publishing needs your access key, which is stored only in your own browser.
+
+## One-time setup: let the Builder publish for you
+
+The Builder saves to your GitHub repository using an access key that you create once. The key is stored only in your own browser.
+
+1. On GitHub, open **Settings**, then **Developer settings**, then **Personal access tokens**, then **Fine-grained tokens**, and choose **Generate new token**. (GitHub sometimes renames these menus slightly.)
+2. Give it a name such as `rocket-logbook builder` and pick an expiry date.
+3. Under **Repository access**, choose **Only select repositories** and pick `rocket-logbook`.
+4. Under **Permissions**, open **Repository permissions** and set **Contents** to **Read and write**. Leave everything else alone.
+5. Generate the token and copy it.
+6. On this site, open the Builder, open **Publish settings**, paste the key into **Access key** and press **Save and test**. It should say "Connected".
+
+If you would rather not use a key, every form also has **Download as a folder**. That gives you a zip. Unzip it, open your repository on GitHub, choose **Add file**, then **Upload files**, drag the `data` folder in and commit.
+
+## Add a new iteration (Mk2, Mk3, ...)
+
+1. Builder, then **New iteration**, then choose the project.
+2. The form starts as a copy of the latest iteration, so you only change what is different.
+3. **Basics**: name (for example `Mk4`), date, status and a short summary.
+4. **Key numbers**: update the values. Keep the names the same as before (Apogee, Lift-off mass, ...) so the project page can chart them across iterations.
+5. **3D model**: drop in your CAD export (see "Exporting your CAD" below). The parts inside it are added to the parts list for you.
+6. **Parts**: for each part fill in material, how it was made, mass and what it does. Mark each one **Unchanged**, **Changed** or **New part**, and say what changed. Changed parts glow amber in the 3D viewer and new parts glow blue.
+7. **What's new and why it's better**: one entry per change. Tick which earlier failures each change fixes. Those failures then show as solved on the older iteration's failure report, with a link to this fix.
+8. Press **Publish to GitHub**. The live site updates about a minute later.
+
+## Log a flight or a failure on an existing iteration
+
+1. Builder, then **Update an iteration**, then choose the project and the iteration.
+2. **Flights**: add the date, outcome, apogee and what happened. Add a `.csv` of flight data and the site plots it. The file needs a header row, a time column and an altitude column, for example `time_s,altitude_m`.
+3. **Failure report**: say what failed, the root cause and the evidence, then list what the next iteration must solve, one problem per line. Set the status in **Basics** to **Failed**.
+4. **Build log**: add dated entries with photos as you build.
+5. Publish.
+
+## Start a new rocket project
+
+1. Builder, then **New rocket project**. Give it a name, a one-line description, its purpose and its goals. Publish.
+2. Wait about a minute and refresh, then use **New iteration** to add its Mk1.
+
+## Remove the sample project
+
+Builder, then **Remove a project**, choose the sample project and publish. This needs the access key. Without it, delete the folder `data/projects/sample-500m` on GitHub and remove `"sample-500m"` from the `projects` list in `data/site.json`.
+
+## Exporting your CAD
+
+- **Best: one STEP file of the whole assembly.** In Fusion 360 use File, Export and choose STEP. In SolidWorks use File, Save As and choose STEP (.step). STEP keeps every part separate and named, which is what makes parts clickable.
+- Name your parts sensibly in CAD before exporting ("Nose cone", "Fin", "Avionics bay"). Those names are what the site shows.
+- The part name you type in the Builder must match the CAD name. Use `*` as a wildcard: `Fin*` covers Fin-1, Fin-2 and Fin-3 in one entry.
+- The rocket is turned so its long axis is horizontal automatically. Millimetres are assumed for STEP.
+- Also accepted: IGES, STL, OBJ, GLB/GLTF, 3MF and FBX. STL has no part names, so it shows as a single part.
+- Native files (`.f3d`, `.sldprt`, `.sldasm`) cannot be shown in 3D, but you can still add them under **Files** so people can download them.
+
+## Limits to know
+
+- GitHub allows about 1 GB for the whole site and 100 MB per file. A typical iteration with CAD, code and photos is 20 to 50 MB.
+- Put videos on YouTube and paste the link into the flight entry. Do not upload video files.
+- Resize photos to about 2000 pixels wide before uploading. Phone photos at full size use the space up quickly.
+- The 3D viewer loads its 3D library from the internet, so the 3D view needs a connection.
+
+## Changing your name, the site name or the About page
+
+Builder, then **Site name and About**.
+
+## If something goes wrong
+
+- **"Could not load the site data"** when opening `index.html` from a folder on your computer: browsers block this. View the site at your GitHub Pages address instead.
+- **A part shows "No details yet"**: its CAD name does not match any entry in the parts list. Open the iteration in the Builder and add a part with that exact name.
+- **The 3D model is rotated or the wrong size**: re-export as STEP in millimetres. If it is still wrong, ask Claude to adjust the model settings for that iteration.
+- **Published but nothing changed**: wait a minute and do a hard refresh (Ctrl+Shift+R, or Cmd+Shift+R on a Mac).
+- **You published a mistake**: every publish is a commit on GitHub. Open the repository, choose **Commits**, find the bad one and use **Revert**.
+
+## How the files are organised
+
+You do not need this for normal use, but it explains what the Builder writes.
+
+```
+data/site.json                          site name, About page, list of projects
+data/projects/<project>/project.json    name, purpose, goals, list of iterations
+data/projects/<project>/<mk>/iteration.json   everything about one iteration
+data/projects/<project>/<mk>/files/     cad, code, data, docs, photos
+```

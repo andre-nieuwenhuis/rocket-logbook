@@ -1,0 +1,25 @@
+{
+  "title": "Rocket logbook",
+  "owner": {
+    "name": "Andre Nieuwenhuis",
+    "headline": "MEng Aerospace Engineering student at the University of Sheffield.",
+    "bio": [
+      "This is my engineering logbook for rocket projects. Each project is documented iteration by iteration, including the ones that failed."
+    ],
+    "links": [
+      {
+        "label": "GitHub",
+        "url": "https://github.com/andre-nieuwenhuis"
+      }
+    ]
+  },
+  "about": "Every rocket project gets its own section, and every iteration records what was new, how it was built, how it flew and what failed. Each failure lists what the next iteration has to solve, and each fix links back to the problem it answers.",
+  "projects": [
+    "sample-500m"
+  ],
+  "github": {
+    "owner": "andre-nieuwenhuis",
+    "repo": "rocket-logbook",
+    "branch": "main"
+  }
+}
